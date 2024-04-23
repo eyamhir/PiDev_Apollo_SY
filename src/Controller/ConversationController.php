@@ -203,7 +203,7 @@ public function editConversation(Request $request, ConversationRepository $conve
     }
 
     // Render the edit form template with the conversation data
-    return $this->render('conversation/edit.html.twig', [
+    return $this->render('conversation/edit_conversations.html.twig', [
         'form' => $form->createView(),
         'conversation' => $conversation,
     ]);
@@ -277,7 +277,7 @@ public function createGroupeConversation(Request $request, EntityManagerInterfac
 
         if (count($errors) > 0) {
             // Il y a des erreurs de validation, gérez-les ici (par exemple, renvoyez-les à la vue)
-            return $this->render('conversation/index.html.twig', [
+            return $this->render('conversation/creer_conversation.html.twig', [
                 'form' => $form->createView(),
                 'errors' => $errors, // Passez les erreurs à la vue pour les afficher
             ]);
@@ -298,7 +298,7 @@ public function createGroupeConversation(Request $request, EntityManagerInterfac
         return new RedirectResponse($this->generateUrl('appa',['conversationId' => $conversationId])); // Remplacez 'liste_amis' par le nom de la route de la liste des amis
     }
 
-    return $this->render('conversation/index.html.twig', [
+    return $this->render('conversation/creer_conversation.html.twig', [
         'form' => $form->createView(),
     ]);
 }
@@ -366,7 +366,7 @@ public function conversationWithUser(Request $request, EntityManagerInterface $e
     $messages = $this->messageRepository->findMessageByConversationId($conversation->getId());
 
     // Rendre la vue de la conversation avec les détails de la conversation et les messages
-    return $this->render('conversation/conversation.html.twig', [
+    return $this->render('conversation/conversation_duo.html.twig', [
         'conversation' => $conversation,
         'messages' => $messages,
         'users' => $users,
@@ -450,7 +450,7 @@ public function groupe(Request $request, EntityManagerInterface $entityManager, 
         ->getQuery()
         ->getResult();
 
-    return $this->render('utilisateur/index.html.twig', [
+    return $this->render('utilisateur/ajouter_participant_conversation.html.twig', [
         'utilisateurs' => $utilisateurs,
         'conversation' => $conversation,
         'conversationId' => $conversationId,
