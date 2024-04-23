@@ -3,6 +3,11 @@
 
 <div class="container mt-5">
     <div class="row">
+        <form method="POST" action="{{ path('leave_group_conversation', {'conversationId': conversation.id}) }}">
+            <button type="submit" class="btn btn-danger mb-3">
+                <i class="fas fa-sign-out-alt"></i> Quitter la conversation
+            </button>
+        </form>
         <!-- Container de la liste des utilisateurs -->
         <div class="col-md-4">
             <div class="card">
@@ -20,6 +25,7 @@
                     </ul>
                 </div>
             </div>
+
         </div>
         <!-- Container de la conversation -->
         <div class="col-md-8">
@@ -57,7 +63,7 @@
                             <input type="file" id="image_upload" name="image_upload" accept="image/*" style="display:none;">
                             <i class="fas fa-image"></i> <!-- Icône d'importation d'image -->
                         </label>
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Envoyer</button> <!-- Bouton Envoyer avec une icône -->
+                        <button type="submit" class="btn btn-primary" id="send-message"><i class="fas fa-paper-plane"></i> Envoyer</button> <!-- Bouton Envoyer avec une icône -->
                     </div>
                 </div>
             </div>
@@ -116,107 +122,86 @@
 </style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        const socket = new WebSocket('ws://localhost:3001');
-        
-        // Écouter les événements WebSocket
-        socket.addEventListener('open', function (event) {
-            console.log('Connected to WebSocket server');
-        });
+<script>
+    const socket = new WebSocket('ws://localhost:3001');
+    
+    // Écouter les événements WebSocket
+    socket.addEventListener('open', function (event) {
+        console.log('Connected to WebSocket server');
+    });
 
-        socket.addEventListener('message', function (event) {
-            const message = JSON.parse(event.data);
-            console.log('Received message from server:', message);
-            // Récupérer le nom de l'utilisateur connecté
-            $.ajax({
-                url: "{{ path('get_user_name', {'userId': app.user.id}) }}",
-                type: 'GET',
-                success: function(response) {
-                    const userName = response.nom;
-                    
-                    // Mettre à jour l'interface utilisateur avec le nouveau message reçu
-                    const messageList = document.querySelector('.message-list');
-                    const messageItem = document.createElement('div');
-                    messageItem.classList.add('message');
-                    if (message.data.mine) {
-                        messageItem.classList.add('sent');
-                    }
-                    messageItem.innerHTML = `
-                        <div class="user-name">${userName}</div>
-                        <div class="message-content">${message.data.contenu}</div>
-                        <div class="message-date">${message.data.createdAt}</div>
-                    `;
-                    messageList.appendChild(messageItem);
-                },
-                error: function(error) {
-                    console.error("Erreur lors de la récupération du nom de l'utilisateur :", error);
+    socket.addEventListener('message', function (event) {
+        const message = JSON.parse(event.data);
+        console.log('Received message from server:', message);
+        // Récupérer le nom de l'utilisateur connecté
+        $.ajax({
+            url: "{{ path('get_user_name', {'userId': app.user.id}) }}",
+            type: 'GET',
+            success: function(response) {
+                const userName = response.nom;
+                
+                // Mettre à jour l'interface utilisateur avec le nouveau message reçu
+                const messageList = document.querySelector('.message-list');
+                const messageItem = document.createElement('div');
+                messageItem.classList.add('message');
+                if (message.data.mine) {
+                    messageItem.classList.add('sent');
+                }
+                messageItem.innerHTML = `
+                    <div class="user-name">${userName}</div>
+                    <div class="message-content">${message.data.contenu}</div>
+                    <div class="message-date">${message.data.createdAt}</div>
+                `;
+                messageList.appendChild(messageItem);
+            },
+            error: function(error) {
+                console.error("Erreur lors de la récupération du nom de l'utilisateur :", error);
+            }
+        });
+    });
+
+    // Fonction pour envoyer le message via WebSocket
+    function sendMessage() {
+        // Récupérer le contenu du message
+        const messageContent = document.querySelector('textarea[name="message_content"]').value;
+
+        // Envoyer le message au serveur via WebSocket
+        const message = {
+            type: 'new_message',
+            data: {
+                contenu: messageContent,
+                createdAt: new Date().toISOString(), // Date de création actuelle
+                mine: true, // C'est votre propre message
+                conversation_id: {{ conversation.id }}, // ID de la conversation actuelle
+                utilisateur_id: {{ app.user.id }}
+            }
+        };
+        socket.send(JSON.stringify(message));
+
+        // Effacer le champ de saisie du message après l'envoi
+        document.querySelector('textarea[name="message_content"]').value = '';
+    }
+
+    // Écouter l'événement de soumission du formulaire
+    $('#message-form').on('submit', function(event) {
+        event.preventDefault(); // Empêcher le rechargement de la page
+        // Appeler la fonction d'envoi de message
+        sendMessage();
+    });
+
+    $(document).ready(function() {
+        $('#search-input').on('keyup', function() {
+            var query = $(this).val().toLowerCase();
+            $('.list-group-item').each(function() {
+                var participantName = $(this).find('p').text().toLowerCase();
+                if (participantName.indexOf(query) === -1) {
+                    $(this).hide();
+                } else {
+                    $(this).show();
                 }
             });
-            // Mettre à jour l'interface utilisateur avec le nouveau message reçu
-            // Par exemple, insérez-le dans la liste des messages existante
-       /*     const messageList = document.getElementById('message-list');
-            const messageItem = document.createElement('div');
-            messageItem.classList.add('message');
-            if (message.data.mine) {
-                messageItem.classList.add('sent');
-            }
-            messageItem.innerHTML = `
-                <div class="message-content">${message.data.contenu}</div>
-                <div class="message-date">${message.data.createdAt}</div>
-            `;
-            messageList.appendChild(messageItem);*/
         });
+    });
+</script>
 
-        // Écouter l'événement de soumission du formulaire
-document.getElementById('message-form').addEventListener('submit', function(event) {
-    event.preventDefault(); // Empêcher le rechargement de la page
-            
-    // Récupérer le contenu du message
-    const messageContent = document.querySelector('textarea[name="message_content"]').value;
-
-    // Envoyer le message au serveur via WebSocket
-    const message = {
-        type: 'new_message',
-        data: {
-            contenu: messageContent,
-            createdAt: new Date().toISOString(), // Date de création actuelle
-            mine: true, // C'est votre propre message
-            conversation_id: {{ conversation.id }}, // ID de la conversation actuelle
-            utilisateur_id: {{ app.user.id }}
-        }
-    };
-    socket.send(JSON.stringify(message));
-
-    // Effacer le champ de saisie du message après l'envoi
-    document.querySelector('textarea[name="message_content"]').value = '';
-});
-
-// Écouter les événements WebSocket
-/*socket.addEventListener('message', function (event) {
-    const message = JSON.parse(event.data);
-    console.log('Received message from server:', message);
-            
-    // Mettre à jour l'interface utilisateur avec le nouveau message reçu
-    // Par exemple, insérez-le dans la liste des messages existante
-    const messageList = document.querySelector('.message-list');
-    const messageItem = document.createElement('div');
-    messageItem.classList.add('message');
-    if (message.data.mine) {
-        messageItem.classList.add('sent');
-    }
-    messageItem.innerHTML = `
-        <span class="user-name">${message.data.utilisateur.nom}</span>
-        <div class="message-content">${message.data.contenu}</div>
-        <div class="message-date">${message.data.createdAt}</div>
-    `;
-    messageList.appendChild(messageItem);
-
-    // Faire défiler la liste des messages vers le bas pour afficher le dernier message ajouté
-    messageList.scrollTop = messageList.scrollHeight;
-});*/
-    </script>
-
-{% endblock  %}
-
-
-
+{% endblock %}

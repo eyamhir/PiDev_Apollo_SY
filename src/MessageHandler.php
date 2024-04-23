@@ -62,7 +62,7 @@ public function onMessage(ConnectionInterface $from, $msg)
 
             // Définir d'autres attributs du message
             $message->setMine($data['mine']); // true ou false
-
+          
             // Enregistrer le message dans la base de données
             $this->entityManager->persist($message);
             $this->entityManager->flush();

@@ -519,4 +519,39 @@ public function choixConversation(Request $request): Response
     return $this->render('conversation/choix-conversation.html.twig');
 }
 
+#[Route('/conversation/{conversationId}/leave', name: 'leave_group_conversation', methods: ['POST'])]
+public function leaveGroupConversation(Request $request, EntityManagerInterface $entityManager, $conversationId): Response
+{
+    // Récupérer la conversation
+    $conversation = $entityManager->getRepository(Conversation::class)->find($conversationId);
+
+    // Vérifier si la conversation existe
+    if (!$conversation) {
+        throw $this->createNotFoundException('La conversation n\'existe pas');
+    }
+
+    // Récupérer l'utilisateur actuel
+    $currentUser = $this->getUser();
+
+    // Vérifier si l'utilisateur est un participant de la conversation
+    $participant = $entityManager->getRepository(ParticipantChat::class)->findOneBy([
+        'utilisateur' => $currentUser,
+        'conversation' => $conversation
+    ]);
+
+    // Si l'utilisateur n'est pas un participant, afficher une erreur
+    if (!$participant) {
+        $this->addFlash('error', 'Vous n\'êtes pas un participant de cette conversation.');
+        return $this->redirectToRoute('group_conversations');
+    }
+
+    // Supprimer l'utilisateur comme participant de la conversation
+    $entityManager->remove($participant);
+    $entityManager->flush();
+
+    // Rediriger vers la liste des conversations de groupe
+    $this->addFlash('success', 'Vous avez quitté la conversation avec succès.');
+    return $this->redirectToRoute('group_conversations');
+}
+
 }

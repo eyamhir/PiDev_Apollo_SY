@@ -19,6 +19,7 @@ class Message
     private ?string $Contenu = null;
     private $mine;
 
+
     #[ORM\Column]
     private ?\DateTimeImmutable $date_envoi = null;
 
@@ -88,4 +89,5 @@ class Message
         $this->mine=true;
         return $this->mine;
     }
+ 
 }

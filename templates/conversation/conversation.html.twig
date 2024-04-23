@@ -106,143 +106,142 @@
               console.log('Connected to WebSocket server');
               console.log(event.data);
           });
-              // Maintenant que la connexion est ouverte, écouter les événements de réception de messages
-         
-
-                 
-                
-                // Fonction pour extraire le nom de fichier de l'URL
-function getImageFileName(url) {
-    // Diviser l'URL en segments en fonction du caractère '/'
-    const segments = url.split('/');
-    // Sélectionner le dernier segment, qui devrait contenir le nom de fichier avec l'extension
-    const fileNameWithExtension = segments[segments.length - 1];
-    // Remplacer les caractères spéciaux dans le nom de fichier pour assurer une meilleure lisibilité
-    const decodedFileName = decodeURIComponent(fileNameWithExtension);
-    // Retourner le nom de fichier sans l'extension
-    return decodedFileName.split('?')[0];
-}
-// Fonction pour vérifier si le message contient une URL d'image
-function isImageUrl(content) {
-    // Vérifier si le contenu du message contient une extension d'image
-    return content.match(/\.(jpeg|jpg|gif|png)$/) !== null;
-}
-
-
-       socket.addEventListener('message', function (event) { 
-    const message = JSON.parse(event.data);
-    console.log('Received message from server:', message);
-
-    // Récupérer le nom de l'utilisateur connecté
-    $.ajax({
-        url: "{{ path('get_user_name', {'userId': app.user.id}) }}",
-        type: 'GET',
-        success: function(response) {
-            const userName = response.nom;
-            
-            // Mettre à jour l'interface utilisateur avec le nouveau message reçu
-            const messageList = document.querySelector('.message-list');
-            const messageItem = document.createElement('div');
-            messageItem.classList.add('message');
-            if (message.data.mine) {
-                messageItem.classList.add('sent');
+  
+          socket.addEventListener('message', function (event) { 
+            const message = JSON.parse(event.data);
+            console.log('Received message from server:', message);
+        
+            // Récupérer le nom de l'utilisateur connecté
+            $.ajax({
+                url: "{{ path('get_user_name', {'userId': app.user.id}) }}",
+                type: 'GET',
+                success: function(response) {
+                    const userName = response.nom;
+                    
+                    // Mettre à jour l'interface utilisateur avec le nouveau message reçu
+                    const messageList = document.querySelector('.message-list');
+        
+                    const messageItem = document.createElement('div');
+                    messageItem.classList.add('message');
+                    if (message.data.mine) {
+                        messageItem.classList.add('sent');
+                    }
+        
+                    if (message.data.contenu.startsWith('https://firebasestorage.googleapis.com')) {
+                        // Si le contenu du message est une URL d'image de Firebase Storage, afficher l'image
+                        const imageElement = document.createElement('img');
+                        imageElement.src = message.data.contenu;
+                        messageItem.appendChild(imageElement);
+                    } else {
+                        // Sinon, afficher le contenu texte du message
+                        messageItem.innerHTML = `
+                            <div class="user-name">${userName}</div>
+                            <div class="message-content">${message.data.contenu}</div>
+                            <div class="message-date">${message.data.createdAt}</div>
+                        `;
+                    }
+        
+                    messageList.appendChild(messageItem);
+                },
+                error: function(error) {
+                    console.error("Erreur lors de la récupération du nom de l'utilisateur :", error);
+                }
+            });
+        });
+        
+        // Écouter l'événement de soumission du formulaire
+       document.getElementById('message-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêcher le rechargement de la page
+        
+            // Récupérer le contenu du message
+            const messageContent = document.querySelector('textarea[name="message_content"]').value;
+            // Vérifier s'il y a un fichier image sélectionné
+            const imageFile = document.getElementById('image_upload').files[0];
+            console.log(imageFile)
+            if (imageFile) {
+                // Si un fichier image est sélectionné, l'envoyer en tant qu'image
+                uploadImage(imageFile)
+                    .then(imageURL => {
+                        // Une fois que l'image est téléchargée avec succès, envoyer le message avec l'URL de l'image
+                        sendMessage(imageURL);
+        
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors de l\'envoi de l\'image :', error);
+                    });
+            } else {
+                // Si aucun fichier image n'est sélectionné, envoyer le message texte
+                sendMessage(messageContent);
             }
-            messageItem.innerHTML = `
-                <div class="user-name">${userName}</div>
-                <div class="message-content">${message.data.contenu}</div>
-                <div class="message-date">${message.data.createdAt}</div>
-            `;
-            messageList.appendChild(messageItem);
-        },
-        error: function(error) {
-            console.error("Erreur lors de la récupération du nom de l'utilisateur :", error);
-        }
-    });
-});
-
-      
-          // Écouter les événements WebSocket
-          socket.addEventListener('error', function (event) {
-              console.error('WebSocket error:', event);
-          });
-      
-          // Fonction pour télécharger une image sur Firebase Storage et retourner son URL
-          function uploadImage(imageFile) {
-              return new Promise((resolve, reject) => {
-                  // Créer une référence de stockage dans Firebase
-                  const storageRef = firebase.storage().ref();
-                  
-                  // Créer une référence de fichier dans Firebase Storage
-                  const imageRef = storageRef.child('images/' + imageFile.name);
-                  
-                  // Envoyer le fichier image à Firebase Storage
-                  imageRef.put(imageFile)
-                      .then(snapshot => {
-                          // Récupérer l'URL de l'image téléchargée
-                          imageRef.getDownloadURL()
-                              .then(imageURL => {
-                                  // Résoudre la promesse avec l'URL de l'image
-                                  resolve(imageURL);
-                              })
-                              .catch(error => {
-                                  // Rejeter la promesse en cas d'erreur lors de la récupération de l'URL de l'image
-                                  reject(error);
-                              });
-                      })
-                      .catch(error => {
-                          // Rejeter la promesse en cas d'erreur lors de l'envoi du fichier image à Firebase Storage
-                          reject(error);
-                      });
-              });
-          }
+        });
         
 
-      
-      // Écouter l'événement de soumission du formulaire
-      document.getElementById('message-form').addEventListener('submit', function(event) {
-          event.preventDefault(); // Empêcher le rechargement de la page
-      
-          // Récupérer le contenu du message
-          const messageContent = document.querySelector('textarea[name="message_content"]').value;
-          // Vérifier s'il y a un fichier image sélectionné
-          const imageFile = document.getElementById('image_upload').files[0];
-          console.log(imageFile)
-          if (imageFile) {
-              // Si un fichier image est sélectionné, l'envoyer en tant qu'image
-              uploadImage(imageFile)
-                  .then(imageURL => {
-                      // Une fois que l'image est téléchargée avec succès, envoyer le message avec l'URL de l'image
-                      sendMessage(imageURL);
-                    
-                  })
-                  .catch(error => {
-                      console.error('Erreur lors de l\'envoi de l\'image :', error);
-                  });
-          } else {
-              // Si aucun fichier image n'est sélectionné, envoyer le message texte
-              sendMessage(messageContent);
-          }
-      });
-      
-    // Fonction pour envoyer un message avec le contenu spécifié
-    function sendMessage(content) {
-        let messageData;
+    
+
+
+
+
+
+        // Fonction pour télécharger une image sur Firebase Storage et retourner son URL
+        function uploadImage(imageFile) {
+            return new Promise((resolve, reject) => {
+                // Créer une référence de stockage dans Firebase
+                const storageRef = firebase.storage().ref();
+        
+                // Créer une référence de fichier dans Firebase Storage
+                const imageRef = storageRef.child('images/' + imageFile.name);
+        
+                // Envoyer le fichier image à Firebase Storage
+                imageRef.put(imageFile)
+                    .then(snapshot => {
+                        // Récupérer l'URL de l'image téléchargée
+                        imageRef.getDownloadURL()
+                            .then(imageURL => {
+                                // Résoudre la promesse avec l'URL de l'image
+                                resolve(imageURL);
+                            })
+                            .catch(error => {
+                                // Rejeter la promesse en cas d'erreur lors de la récupération de l'URL de l'image
+                                reject(error);
+                            });
+                    })
+                    .catch(error => {
+                        // Rejeter la promesse en cas d'erreur lors de l'envoi du fichier image à Firebase Storage
+                        reject(error);
+                    });
+            });
+        }
+        
+        // Fonction pour envoyer un message avec le contenu spécifié
+        function sendMessage(content) {
+            let messageData;
             if (typeof content === 'string') {
-            // Le contenu est une URL d'image
-            messageData = {
-                contenu: content, // Le contenu est l'URL de l'image
-                createdAt: new Date().toISOString(), // Date de création actuelle
-                utilisateur_id: {{ app.user.id }},
-                conversation_id: {{ conversation.id }},
-                mine: true // C'est votre propre message
-           
-            };
+                // Le contenu est une URL d'image
+                messageData = {
+                    contenu: content, // Le contenu est l'URL de l'image
+                    createdAt: new Date().toISOString(), // Date de création actuelle
+                    utilisateur_id: {{ app.user.id }},
+                    conversation_id: {{ conversation.id }},
+                    mine: true // C'est votre propre message
+               
+                };
+            } else {
+                // Le contenu est le texte du message
+                messageData = {
+                    contenu: content, // Le contenu est le texte du message
+                    createdAt: new Date().toISOString(), // Date de création actuelle
+                    utilisateur_id: {{ app.user.id }},
+                    conversation_id: {{ conversation.id }},
+                    mine: true // C'est votre propre message
+                };
+            }
+        
             // Envoyer le message au serveur via WebSocket
             const message = {
                 type: 'new_message',
                 data: messageData
             };
-    
+        
             // Stocker les données du message dans Firebase
             firebaseref.push().set(messageData)
                 .then(function() {
@@ -251,46 +250,17 @@ function isImageUrl(content) {
                 .catch(function(error) {
                     console.error("Erreur lors du stockage du message dans Firebase :", error);
                 });
-    
+        
             socket.send(JSON.stringify(message));
-    
+        
             // Effacer le champ de saisie du message après l'envoi
             document.querySelector('textarea[name="message_content"]').value = '';
-        
         }
-        else{
-        const messageContent = document.querySelector('textarea[name="message_content"]').value;
-        messageData = {
-            contenu: messageContent, // Le contenu est le texte du message
-            createdAt: new Date().toISOString(), // Date de création actuelle
-            utilisateur_id: {{ app.user.id }},
-            conversation_id: {{ conversation.id }},
-            mine: true // C'est votre propre message
-        };
-
-        // Envoyer le message au serveur via WebSocket
-        const message = {
-            type: 'new_message',
-            data: messageData
-        };
-
-        // Stocker les données du message dans Firebase
-        firebaseref.push().set(messageData)
-            .then(function() {
-                console.log("Message stocké avec succès dans Firebase !");
-            })
-            .catch(function(error) {
-                console.error("Erreur lors du stockage du message dans Firebase :", error);
-            });
-
-        socket.send(JSON.stringify(message));
-
-        // Effacer le champ de saisie du message après l'envoi
-        document.querySelector('textarea[name="message_content"]').value = '';
-        }   
-    }
 
 
+   
+
+     
     document.addEventListener('DOMContentLoaded', function () {
         // Écouter l'événement de saisie dans le champ de recherche
         document.getElementById('search-input').addEventListener('input', function () {
