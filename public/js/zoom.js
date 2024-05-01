@@ -1,6 +1,6 @@
-const APP_ID = "5313aa853e4f4d48afdf0f5571daa328"
-const TOKEN = "007eJxTYPAIy55stlZAxm+pfPxkN/nMOvHvuidLZt1fLahYO13uxGYFBlNjQ+PERAtT41STNJMUE4vEtJQ0gzRTU3PDlMREYyOLstdyaQ2BjAxt5XOYGRkgEMRnY0jOSMzLS2VgAADL6h5A"
-const CHANNEL = "channe"
+const APP_ID = "64b9b8c92a344d2d92e03601021038e6"
+const TOKEN = "007eJxTYLi2LlfQdssaxzOrBNL/nOjQ/9HnPTfoEXNuxZt67dxVSQ0KDGYmSZZJFsmWRonGJiYpRimWRqkGxmYGhgZGhgbGFqlmNjc00hoCGRmKmVazMjJAIIjPwpCckVjCwAAAXfUeqw=="
+const CHANNEL = "chat"
 
 const client = AgoraRTC.createClient({mode:'rtc', codec:'vp8'})
 

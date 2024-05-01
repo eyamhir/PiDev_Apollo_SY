@@ -13,9 +13,11 @@ class IndexController extends AbstractController
     {
         return $this->render('AI_Image/ai.html.twig');
     }
-    #[Route('/zoom', name: 'ap_index')]
-    public function indexa(): Response
+ //   #[Route('/zoom', name: 'ap_index')]
+  /*  public function indexa(): Response
     {
         return $this->render('conversation/zoom.html.twig');
-    }
+    }*/
 }
+
+?>

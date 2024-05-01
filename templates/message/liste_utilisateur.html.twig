@@ -12,9 +12,7 @@
             {% for user in users %}
                 <li>
                     <a href="{{ path('conversation_with_user', {'userId': user.id}) }}" class="user-link">
-                        <div class="user-avatar">
-                            <img src="{{ user.avatar }}" alt="{{ user.nom }}">
-                        </div>
+
                         <div class="user-details">
                             <h2>{{ user.nom }} {{ user.prenom }}</h2>
                        

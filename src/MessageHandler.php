@@ -7,17 +7,19 @@ use Exception;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 use SplObjectStorage;
- 
+use App\Repository\ConversationRepository;
 class MessageHandler implements MessageComponentInterface
 {
  
     protected $connections;
     protected $entityManager;
+    protected $conversationRepository;
  
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager,ConversationRepository $conversationRepository)
     {
         $this->connections = new SplObjectStorage;
         $this->entityManager = $entityManager;
+        $this->conversationRepository = $conversationRepository;
       
     }
    
@@ -66,12 +68,9 @@ public function onMessage(ConnectionInterface $from, $msg)
             // Enregistrer le message dans la base de données
             $this->entityManager->persist($message);
             $this->entityManager->flush();
- // Après l'ajout du message, mettez à jour le dernier message de la conversation
-   // Après l'ajout du message, mettez à jour le dernier message de la conversation
-  
-   /* $conversationRepository = $this->entityManager->getRepository('App\Entity\Message');
-   $conversationRepository->updateLastMessage($conversation);*/
-            // Diffuser le message à tous les clients connectés
+  // Mettre à jour le dernier message de la conversation
+  $this->conversationRepository->updateLastMessageIds($conversation, $message, $this->entityManager);
+
             foreach ($this->connections as $connection) {
                 $connection->send($msg);
             }

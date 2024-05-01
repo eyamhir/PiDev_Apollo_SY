@@ -60,7 +60,7 @@
                         </label>
                         <button type="button" id="emoji-picker-button" class="btn btn-outline-secondary"><i class="far fa-smile"></i></button>
                         <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Envoyer</button> <!-- Bouton Envoyer avec une icône -->
-                       
+                        
 
 
                     </div>
@@ -91,6 +91,7 @@
             messagingSenderId: "733766792191",
             appId: "1:733766792191:web:1ee1ff64f409cbeebdadca",
             measurementId: "G-K06QPJ9069"
+
           };
         
           // Initialize Firebase
@@ -174,12 +175,6 @@
                 sendMessage(messageContent);
             }
         });
-        
-
-    
-
-
-
 
 
         // Fonction pour télécharger une image sur Firebase Storage et retourner son URL
@@ -279,13 +274,6 @@
             });
         });
     });
-    
-
-
-
-
-
-
 
       // Fonction pour gérer le clic long sur un message
       function handleLongPress(messageItem) {

@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Message;
 use App\Entity\Utilisateur;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @extends ServiceEntityRepository<Conversation>
@@ -122,5 +123,40 @@ public function checkIfUserIsParticipant(int $conversationId, int $userId): bool
 
     return $qb->getQuery()->getOneOrNullResult() !== null;
 }
+
+
+
+public function updateLastMessageIds(Conversation $conversation, Message $message, EntityManagerInterface $entityManager)
+{
+    try {
+        $qb = $this->createQueryBuilder('c');
+
+        $qb->update('App\Entity\Conversation', 'c')
+           ->set('c.dernier_message', $message->getId())
+           ->getQuery()
+           ->execute();
+       
+        $entityManager->flush();
+    } catch (\Exception $e) {
+        throw $e;
+    }
+}
+
+
+
+
+public function getLastMessageDetails(int $conversationId): ?array
+{
+    $qb = $this->createQueryBuilder('c');
+
+    $qb->select('lm.id as messageId', 'lm.contenu as messageContent', 'lm.createdAt as messageCreatedAt')
+        ->leftJoin('c.dernier_message', 'lm')
+        ->where('c.id = :conversationId')
+        ->setParameter('conversationId', $conversationId);
+
+    return $qb->getQuery()->getOneOrNullResult();
+}
+
+
 
 }

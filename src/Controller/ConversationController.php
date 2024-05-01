@@ -513,6 +513,13 @@ public function addParticipantsToConversation(Request $request, EntityManagerInt
     return $this->redirectToRoute('conversation_with_group', ['conversationId' => $conversationId]);
 }
 
+
+#[Route('/zoom', name: 'zoom_view')]
+public function zoomView(): Response
+{
+    return $this->render('conversation/zoom.html.twig');
+}
+
 #[Route('/choix-conversation', name: 'choix_conversation')]
 public function choixConversation(Request $request): Response
 { 
