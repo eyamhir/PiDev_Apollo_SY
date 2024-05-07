@@ -1,0 +1,41 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="container">
+ {% for message in app.flashes('notice') %}
+            <div class="alert alert-success mt-4 mb-b">
+                {{ message }}
+            </div>
+        {% endfor %}
+ <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Type</th>
+      <th scope="col">Date Debut</th>
+      <th scope="col">Date Fin</th>
+      <th scope="col">Description</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for event in data %}
+    <tr>
+      <th scope="row">{{ event.id }}</th>
+      <td>{{ event.nom }}</td>
+      <td>{{ event.type }}</td>
+      <td>{{ event.dateDebut|date('Y-m-d') }}</td> {# Format dateDebut using 'Y-m-d' format #}
+      <td>{{ event.dateFin|date('Y-m-d') }}</td>   {# Format dateFin using 'Y-m-d' format #}
+      <td>{{ event.description }}</td>
+      <td>
+          <a class="btn btn-warning" href="{{ path('update', {'id': event.id}) }}">Modifier</a> {# Use event.id directly without additional curly braces #}
+          <a class="btn btn-danger" href="{{ path('delete', {'id': event.id}) }}">Supprimer</a>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+  
+</div>                
+{% endblock %}

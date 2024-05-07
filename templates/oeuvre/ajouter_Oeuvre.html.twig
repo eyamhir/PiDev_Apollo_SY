@@ -1,0 +1,18 @@
+{% extends 'base-back2.html.twig' %}
+
+
+{% block title %}New OeuvreArt{% endblock %}
+{% block body %}
+ 
+    <h1>Create new OeuvreArt</h1>
+<div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Ajouter portfolio</h4>
+            <p class="card-description"> Horizontal form layout </p>
+                 {{ include('/oeuvre/form_Oeuvre.html.twig' )}}
+    </div>
+    </div>
+    </div>
+     <a href="{{ path('liste_Oeuvre') }}">Back to list</a>
+{% endblock %}

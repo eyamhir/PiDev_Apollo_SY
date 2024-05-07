@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Exposition index{% endblock %}
+
+{% block body %}
+    <h1>Exposition index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+            
+                <th>Image_affiche</th>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Date_debut</th>
+                <th>Date_fin</th>
+                <th>Type_expo</th>
+                <th>Lacalisation</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for exposition in expositions %}
+            <tr>
+                <td>{{ exposition.imageAffiche }}</td>
+                <td>{{ exposition.titre }}</td>
+                <td>{{ exposition.description }}</td>
+                <td>{{ exposition.dateDebut ? exposition.dateDebut|date('Y-m-d') : '' }}</td>
+                <td>{{ exposition.dateFin ? exposition.dateFin|date('Y-m-d') : '' }}</td>
+                <td>{{ exposition.typeExpo }}</td>
+                <td>{{ exposition.lacalisation }}</td>
+                <td>
+                    <a href="{{ path('detail_Exposition', {'id': exposition.id}) }}">show</a>
+                    <a href="{{ path('modifier_Exposition', {'id': exposition.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('ajouter_Exposition') }}">Create new</a>
+{% endblock %}

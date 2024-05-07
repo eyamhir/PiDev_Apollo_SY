@@ -1,0 +1,47 @@
+{% extends 'base-back2.html.twig' %}
+
+{# {% block title %}OeuvreArt index{% endblock %} #}
+
+{% block body %}
+    <h1>OeuvreArt index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Image_oeuvre</th>
+                <th>Description</th>
+                <th>Date_creation</th>
+                <th>Dimension</th>
+                <th>Prix</th>
+                <th>Categorie</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for oeuvre_art in oeuvre_arts %}
+            <tr>
+                <td>{{ oeuvre_art.id }}</td>
+                <td>{{ oeuvre_art.titre }}</td>
+                <td>{{ oeuvre_art.imageOeuvre }}</td>
+                <td>{{ oeuvre_art.description }}</td>
+                <td>{{ oeuvre_art.dateCreation ? oeuvre_art.dateCreation|date('Y-m-d') : '' }}</td>
+                <td>{{ oeuvre_art.dimension }}</td>
+                <td>{{ oeuvre_art.prix }}</td>
+                <td>{{ oeuvre_art.categorie }}</td>
+                <td>
+                    <a href="{{ path('detail_Oeuvre', {'id': oeuvre_art.id}) }}" class="badge badge-outline-success">show</a>
+                    <a href="{{ path('modifier_Oeuvre', {'id': oeuvre_art.id}) }}" class="badge badge-outline-danger">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('ajouter_Oeuvre') }}" >Create new</a>
+{% endblock %}

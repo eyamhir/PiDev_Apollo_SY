@@ -1,0 +1,47 @@
+{% extends 'base-back2.html.twig' %}
+
+{% block title %}Portfolio{% endblock %}
+
+{% block body %}
+    <h1>Portfolio</h1>
+    <table class="table" border=2>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ portfolio.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom_Artistique</th>
+                <td>{{ portfolio.nomArtistique }}</td>
+            </tr>
+            <tr>
+                <th>ImageUrl</th>
+               <td>
+                    {% if portfolio.imageUrl %}
+                        <img src="{{ asset('uploads/portfolio_images/' ~ portfolio.imageUrl) }}" alt="Portfolio Image">
+                    {% else %}
+                        No Image
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Biographie</th>
+                <td>{{ portfolio.biographie }}</td>
+            </tr>
+            <tr>
+                <th>Debut_carriere</th>
+                <td>{{ portfolio.debutCarriere ? portfolio.debutCarriere|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Reseau_sociaux</th>
+                <td>{{ portfolio.reseauSociaux }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('liste_Portfolio') }}">back to list</a>
+
+    <a href="{{ path('modifier_Portfolio', {'id': portfolio.id}) }}">edit</a>
+
+    {{ include('potfolio/supprimer.html.twig') }}
+{% endblock %}

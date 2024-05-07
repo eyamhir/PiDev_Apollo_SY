@@ -1,0 +1,13 @@
+{% extends 'base-back2.html.twig' %}
+
+{% block title %}Edit OeuvreArt{% endblock %}
+
+{% block body %}
+    <h1>Edit OeuvreArt</h1>
+
+    {{ include('oeuvre/form_Oeuvre.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('liste_Oeuvre') }}">back to list</a>
+
+    {{ include('oeuvre/supprimer_oeuvre.html.twig') }}
+{% endblock %}

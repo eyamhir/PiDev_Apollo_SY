@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Exposition{% endblock %}
+
+{% block body %}
+    <h1>Exposition</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ exposition.id }}</td>
+            </tr>
+            <tr>
+                <th>Image_affiche</th>
+                {# <td>{{ exposition.imageAffiche }}</td> #}
+                 <td>
+                    {% if exposition.imageAffiche %}
+                        <img src="{{ asset('uploads/expo_images/' ~ exposition.imageAffiche) }}" alt="Image de l'expo">
+                    {% else %}
+                        <span>Aucune image disponible</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ exposition.titre }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ exposition.description }}</td>
+            </tr>
+            <tr>
+                <th>Date_debut</th>
+                <td>{{ exposition.dateDebut ? exposition.dateDebut|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date_fin</th>
+                <td>{{ exposition.dateFin ? exposition.dateFin|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Type_expo</th>
+                <td>{{ exposition.typeExpo }}</td>
+            </tr>
+            <tr>
+                <th>Lacalisation</th>
+                <td>{{ exposition.lacalisation }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('liste_Exposition') }}">back to list</a>
+
+    <a href="{{ path('modifier_Exposition', {'id': exposition.id}) }}">edit</a>
+
+    {{ include('exposition/supprimer_expo.html.twig') }}
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base-back2.html.twig' %}
+
+{% block title %}OeuvreArt{% endblock %}
+
+{% block body %}
+    <h1>OeuvreArt</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ oeuvre_art.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ oeuvre_art.titre }}</td>
+            </tr>
+            <tr>
+                <th>Image_oeuvre</th>
+                <td>
+                    {% if oeuvre_art.imageOeuvre %}
+                        <img src="{{ asset('uploads/images/' ~ oeuvre_art.imageOeuvre) }}" alt="Image de l'oeuvre">
+                    {% else %}
+                        <span>Aucune image disponible</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ oeuvre_art.description }}</td>
+            </tr>
+            <tr>
+                <th>Date_creation</th>
+                <td>{{ oeuvre_art.dateCreation ? oeuvre_art.dateCreation|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Dimension</th>
+                <td>{{ oeuvre_art.dimension }}</td>
+            </tr>
+            <tr>
+                <th>Prix</th>
+                <td>{{ oeuvre_art.prix }}</td>
+            </tr>
+            <tr>
+                <th>Categorie</th>
+                <td>{{ oeuvre_art.categorie }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('liste_Oeuvre') }}">back to list</a>
+
+    <a href="{{ path('modifier_Oeuvre', {'id': oeuvre_art.id}) }}">edit</a>
+
+    {{ include('oeuvre/supprimer_oeuvre.html.twig') }}
+{% endblock %}

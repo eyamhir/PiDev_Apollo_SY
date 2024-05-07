@@ -1,0 +1,13 @@
+{% extends 'base-back2.html.twig' %}
+
+{% block title %}Edit Portfolio{% endblock %}
+
+{% block body %}
+    <h1>Edit Portfolio</h1>
+
+    {{ include('/potfolio/formulaire_po.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('liste_Portfolio') }}">back to list</a>
+
+    {{ include('potfolio/supprimer.html.twig') }}
+{% endblock %}

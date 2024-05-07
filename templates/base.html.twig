@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+{% block header %}
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrao@5.0.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">       
+         {% block stylesheets %}
+            <style>
+                .errormessage {
+                    color: red;
+                    font-size: 12px;
+                }
+            </style>
+
+            <title>Apollo</title>
+            <!-- CSS FILES -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+            <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/css/bootstrap-icons.css') }}" rel="stylesheet">
+            <link rel="stylesheet" href="{{ asset('assets/css/slick.css') }}"/>
+            <link href="{{ asset('assets/css/tooplate-little-fashion.css') }}" rel="stylesheet">
+        {% endblock %}
+
+    </head>
+{% endblock %}
+
+{% block nav %}
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <a class="navbar-brand" href="{{path('display_admin')}}">
+                <strong><span>A</span>pollo</strong>
+            </a>
+
+            <div class="d-lg-none">
+                <a href="{{path('app_utilisateur_new')}}" class="bi-person custom-icon me-3"></a>
+
+                <a href="product-detail.html" class="bi-bag custom-icon"></a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{path('display_admin')}}">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">Story</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html">Products</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="faq.html">FAQs</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+
+                <div class="d-none d-lg-block">
+                    <a href="{{path('app_login')}}" class="bi-person custom-icon me-3"></a>
+
+                    <a href="product-detail.html" class="bi-bag custom-icon"></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+<body>
+{% block body %}
+    <br>
+    <br>
+{% endblock %}
+
+
+{% block footer %}
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-3 col-10 me-auto mb-4">
+                    <h4 class="text-white mb-3"><a href="index.html">A</a>pollo</h4>
+                    <p class="copyright-text text-muted mt-lg-5 mb-4 mb-lg-0">Copyright © 2022 <strong>A pollo</strong></p>
+                    <br>
+                    <p class="copyright-text">Designed by <a href="https://www.tooplate.com/" target="_blank">Tooplate</a></p>
+                </div>
+
+                <div class="col-lg-5 col-8">
+                    <h5 class="text-white mb-3">Sitemap</h5>
+
+                    <ul class="footer-menu d-flex flex-wrap">
+                        <li class="footer-menu-item"><a href="about.html" class="footer-menu-link">Story</a></li>
+
+                        <li class="footer-menu-item"><a href="#" class="footer-menu-link">Products</a></li>
+
+                        <li class="footer-menu-item"><a href="#" class="footer-menu-link">Privacy policy</a></li>
+
+                        <li class="footer-menu-item"><a href="#" class="footer-menu-link">FAQs</a></li>
+
+                        <li class="footer-menu-item"><a href="#" class="footer-menu-link">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-4">
+                    <h5 class="text-white mb-3">Social</h5>
+
+                    <ul class="social-icon">
+
+                        <li><a href="#" class="social-icon-link bi-youtube"></a></li>
+
+                        <li><a href="#" class="social-icon-link bi-whatsapp"></a></li>
+
+                        <li><a href="#" class="social-icon-link bi-instagram"></a></li>
+
+                        <li><a href="#" class="social-icon-link bi-skype"></a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+{% endblock %}
+
+
+{% block javascripts %}
+    <!-- JAVASCRIPT FILES -->
+    <!-- Inclure jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Inclure le JavaScript de Bootstrap Datepicker -->
+    <script src="path/to/bootstrap-datepicker.js"></script>
+    <!-- Inclure le JavaScript de l'initialisation du DatePicker -->
+    <script>
+        $(document).ready(function() {
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true
+            });
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/js/Headroom.js') }}"></script>
+    <script src="{{ asset('assets/js/jQuery.headroom.js') }}"></script>
+    <script src="{{ asset('assets/js/slick.min.js') }}"></script>
+    <script src="{{ asset('assets/js/custom.js') }}"></script>
+{% endblock %}
+</body>
+</html>

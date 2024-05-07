@@ -1,0 +1,29 @@
+{{ form_start(form) }}
+    <div class="form-group">
+                    {{ form_label(form.nom_Artistique) }}
+                    {{ form_widget(form.nom_Artistique, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.nom_Artistique) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.imageUrl) }}
+                    {{ form_widget(form.imageUrl,{'attr': {'enctype': 'multipart/form-data'}}) }}
+                    {{ form_errors(form.imageUrl) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.biographie) }}
+                    {{ form_widget(form.biographie, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.biographie) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.debut_carriere) }}
+                    {{ form_widget(form.debut_carriere) }}
+                    {{ form_errors(form.debut_carriere) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.reseau_sociaux) }}
+                    {{ form_widget(form.reseau_sociaux, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.reseau_sociaux) }}
+                </div>
+                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                <button type="reset" class="btn btn-dark">Cancel</button>
+{{ form_end(form) }}

@@ -1,0 +1,58 @@
+{% extends 'base-back2.html.twig' %}
+
+{# {% block title %}Portfolio index{% endblock %} #}
+
+{% block body %}
+    <h1>Portfolio index</h1>
+<div class="row">
+    <div  style="display: flex;align-items: center;justify-content: center;margin-top: 150px; padding: 10px;">
+        <div class="card">
+         <div class="card-body">
+            <h4 class="card-title"> Portfolio liste</h4>
+            <p class="card-description"> Add class <code>.table</code></p>
+            <div class="table-responsive">
+            <table class="table" border=2>
+                 <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom_Artistique</th>
+                        <th>ImageUrl</th>
+                        <th>Biographie</th>
+                        <th>Debut_carriere</th>
+                        <th>Reseau_sociaux</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+        {% for portfolio in portfolios %}
+            <tr>
+                <td>{{ portfolio.id }}</td>
+                <td>{{ portfolio.nomArtistique }}</td>
+                <td>{{ portfolio.imageUrl }}</td>
+                <td>{{ portfolio.biographie }}</td>
+                <td>{{ portfolio.debutCarriere ? portfolio.debutCarriere|date('Y-m-d') : '' }}</td>
+                <td>{{ portfolio.reseauSociaux }}</td>
+                <td>
+                    <a href="{{ path('detail', {'id': portfolio.id}) }}">show</a>
+                    <a href="{{ path('modifier_Portfolio', {'id': portfolio.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+     <a href="{{ path('portfolio_ajouter') }}">Create new</a> 
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+   
+   
+   
+    
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Codepromo index{% endblock %}
+
+{% block body %}
+    <h1>Codepromo index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Code</th>
+                <th>DateExpiration</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for codepromo in codepromos %}
+            <tr>
+                <td>{{ codepromo.id }}</td>
+                <td>{{ codepromo.code }}</td>
+                <td>{{ codepromo.dateExpiration ? codepromo.dateExpiration|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_codepromo_show', {'id': codepromo.id}) }}">show</a>
+                    <a href="{{ path('app_codepromo_edit', {'id': codepromo.id}) }}">edit</a>
+                    <a href="{{ path('app_codepromo_delete', {'id': codepromo.id}) }}">delete</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_codepromo_new') }}">Create new</a>
+{% endblock %}

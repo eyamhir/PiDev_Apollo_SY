@@ -1,0 +1,52 @@
+{% extends 'basefront.html.twig' %}
+{% block body %}
+<main>
+    <section class="preloader">
+        <div class="spinner">
+            <span class="sk-inner-circle"></span>
+        </div>
+    </section>
+     <header class="site-header section-padding d-flex justify-content-center align-items-center">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-10 col-12">
+                            <h1>
+                                <span class="d-block text-primary">Choisir Votre </span>
+                                <span class="d-block text-dark">Oeuvre preferée</span>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+            </header>
+    <section class="products section-padding">        
+        <div class="container">
+            <div class="row">
+                {% for oeuvre in oeuvre_arts %}
+                <div class="col-lg-4 col-12 mb-3">
+                    <div class="product-thumb">
+                        <a href="{{ path('detail_OeuvreF', {'id': oeuvre.id}) }}">
+                            <img src="{{ asset('uploads/images/' ~ oeuvre.imageOeuvre) }}" class="img-fluid product-image" alt="">
+                        </a>
+
+                        <div class="product-top d-flex">
+                            <a href="#" class="bi-heart-fill product-icon ms-auto"></a>
+                        </div>
+
+                        <div class="product-info d-flex">
+                            <div>
+                                <h5 class="product-title mb-0">
+                                    <a href="product-detail.html" class="product-title-link">{{ oeuvre.titre }}</a>
+                                </h5>
+                                <p class="product-p">{{ oeuvre.categorie }}</p>
+                            </div>
+                            <small class="product-price text-muted ms-auto">{{ oeuvre.prix }}DT</small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

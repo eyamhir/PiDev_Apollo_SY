@@ -1,0 +1,65 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Utilisateur{% endblock %}
+
+{% block bb %}
+
+    <h1>Utilisateur</h1>
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+                {% block body %}
+                    <!-- Table starts here -->
+                    <div>
+                        <div>
+                            <h1>Utilisateur</h1>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                    <tr>
+                                        <th>Id</th>
+                                        <td>{{ utilisateur.id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email</th>
+                                        <td>{{ utilisateur.email }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Roles</th>
+                                        <td>{{ utilisateur.roles ? utilisateur.roles|json_encode : '' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Password</th>
+                                        <td>{{ utilisateur.password }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <td>{{ utilisateur.nom }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Prenom</th>
+                                        <td>{{ utilisateur.prenom }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Date de Naissance</th>
+                                        <td>{{ utilisateur.dateNaissance ? utilisateur.dateNaissance|date('Y-m-d') : '' }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Table ends here -->
+
+                    <!-- Buttons below the table (horizontal alignment) -->
+                    <div>
+                        <a href="{{ path('app_utilisateur_index') }}" class="btn btn-secondary">Back to list</a>
+                        <a href="{{ path('app_utilisateur_edit', {'id': utilisateur.id}) }}" class="btn btn-primary">Edit</a>
+                    </div>
+
+                    {{ include('utilisateur/_delete_form.html.twig') }}
+                {% endblock %}
+            </div>
+        </div>
+
+{% endblock %}

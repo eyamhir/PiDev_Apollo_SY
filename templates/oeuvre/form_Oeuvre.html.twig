@@ -1,0 +1,73 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'forms-sample'}}) }}
+
+    <div class="form-group row">
+        {{ form_label(form.titre, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+        <div class="col-sm-9">
+            {{ form_widget(form.titre, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.titre) }}
+        </div>
+    </div>
+
+    <div class="form-group row">
+        {{ form_label(form.image_oeuvre, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+        <div class="col-sm-9">
+            {{ form_widget(form.image_oeuvre, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.image_oeuvre) }}
+        </div>
+    </div>
+        <div class="form-group row">
+            {{ form_label(form.date_creation, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+            <div class="col-sm-9">
+                <input type="text" class="form-control datepicker" id="date_creation" name="date_creation" placeholder="jj-mm-yy">
+                {{ form_errors(form.date_creation) }}
+            </div>
+        </div>
+    <div class="form-group row">
+        {{ form_label(form.dimension, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+        <div class="col-sm-9">
+            {{ form_widget(form.dimension, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.dimension) }}
+        </div>
+    </div>
+
+    <div class="form-group row">
+        {{ form_label(form.prix, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+        <div class="col-sm-9">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text bg-primary text-white">DT</span>
+                </div>
+                {{ form_widget(form.prix, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.prix) }}
+                <div class="input-group-append">
+                    <span class="input-group-text">.00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        {{ form_label(form.categorie, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+        <div class="col-sm-9">
+            {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.categorie) }}
+        </div>
+    </div>
+
+    <div class="form-group row">
+        {{ form_label(form.portfolios, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+        <div class="col-sm-9">
+            {{ form_widget(form.portfolios, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.portfolios) }}
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-9 offset-sm-3">
+            <button type="submit" class="btn btn-primary mr-2">Save</button>
+            <button class="btn btn-dark">Cancel</button>
+        </div>
+    </div>
+
+{{ form_end(form) }}
+

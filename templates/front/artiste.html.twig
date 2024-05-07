@@ -1,0 +1,77 @@
+{% extends 'basefront.html.twig' %}
+{% block body %}
+          
+ <section class="preloader">
+        <div class="spinner">
+            <span class="sk-inner-circle"></span>
+        </div>
+    </section>
+         <header class="site-header section-padding-img site-header-image">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-6 col-12 header-info">
+                            <h1>
+                                <span class="d-block text-primary">APOLLO</span>
+                                <span class="d-block text-dark">GALERIE</span>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+
+                <img src="images/header/businesspeople-meeting-office-working.jpg" class="header-image img-fluid" alt="">
+            </header>
+    <section class="team section-padding">
+        <div class="container">
+            <div class="row">
+           
+                <div class="col-12">
+                    <h2 class="mb-5">Rencontrer Nos <span>Artistes</span></h2>
+                </div>
+                {% for portfolio in portfolios %}
+                <div class="col-lg-4 mb-4 col-12">
+                    <div class="team-thumb d-flex align-items-center">
+                        <img src="{{ asset('uploads/portfolio_images/' ~ portfolio.imageUrl) }}" class="img-fluid custom-circle-image team-image me-4" alt="">
+                        <div class="team-info">
+                            <h5 class="mb-0">{{ portfolio.nomArtistique }}</h5>
+                            <strong class="text-muted">Product, VP</strong>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn custom-modal-btn" data-bs-toggle="modal" data-bs-target="#modal-{{ portfolio.id }}">
+                                <i class="bi-plus-circle-fill"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% for portfolio in portfolios %}
+    <div class="modal fade" id="modal-{{ portfolio.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0">
+                <div class="modal-header flex-column">
+                    <h3 class="modal-title" id="exampleModalLabel">{{ portfolio.nomArtistique }}</h3>
+                    <h6 class="text-muted">Global, Head of Marketing</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="mb-4">Biographie</h5>
+                    <div class="row mb-4">
+                        <div class="col-lg-6 col-12">
+                            <p>{{ portfolio.biographie }}.</p>
+                        </div>
+                       
+                    </div>
+                    <ul class="social-icon">
+                        <li class="me-3"><strong>Où trouver ?</strong></li>
+                        <li><a href="#" class="social-icon-link bi-facebook"></a></li>
+                        <li><a href="#" class="social-icon-link bi-instagram"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+{% endblock %}
